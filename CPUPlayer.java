@@ -31,7 +31,7 @@ class CPUPlayer
     // ont le même score.
     public ArrayList<Move> getNextMoveMinMax(Board board)
     {
-        numExploredNodes = 1;
+        numExploredNodes = 3;
 
         ArrayList<Move> moves = board.listMoves(player);
 
@@ -50,7 +50,7 @@ class CPUPlayer
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
     public ArrayList<Move> getNextMoveAB(Board board){
-        numExploredNodes = 1;
+        numExploredNodes = 3;
 
         ArrayList<Move> moves = board.listMoves(player);
 
