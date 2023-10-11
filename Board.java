@@ -13,6 +13,10 @@ class Board
         board = new Mark[3][3];
     }
 
+    public Board(Mark[][] board) {
+        this.board = board;
+    }
+
     // Place la pièce 'mark' sur le plateau, à la
     // position spécifiée dans Move
     //
