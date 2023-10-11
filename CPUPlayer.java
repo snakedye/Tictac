@@ -31,11 +31,11 @@ class CPUPlayer
     // ont le même score.
     public ArrayList<Move> getNextMoveMinMax(Board board)
     {
-        numExploredNodes = 3;
+        numExploredNodes = 0;
 
         ArrayList<Move> moves = board.listMoves(player);
 
-        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> minMax(board.clone(), move, numExploredNodes, player)).toList());
+        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> minMax(board.clone(), move, player)).toList());
 
         for (Float score : scoreList) {
             if (scoreList.indexOf(score) != scoreList.lastIndexOf(score)) {
@@ -50,11 +50,11 @@ class CPUPlayer
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
     public ArrayList<Move> getNextMoveAB(Board board){
-        numExploredNodes = 3;
+        numExploredNodes = 0;
 
         ArrayList<Move> moves = board.listMoves(player);
 
-        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> alphaBeta(board.clone(), move, numExploredNodes, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, player)).toList());
+        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> alphaBeta(board.clone(), move, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, player)).toList());
 
         for (Float score : scoreList) {
             if (scoreList.indexOf(score) != scoreList.lastIndexOf(score)) {
@@ -65,11 +65,15 @@ class CPUPlayer
         return new ArrayList<>();
     }
 
-    public float alphaBeta(Board board, Move move, int depth, float alpha, float beta, Mark maxPlayer) {
+    public float alphaBeta(Board board, Move move, float alpha, float beta, Mark maxPlayer) {
+        numExploredNodes += 1;
+
         board.play(move, maxPlayer);
 
-        if (depth == 0) {
-            return board.evaluate(maxPlayer);
+        float score = board.evaluate(maxPlayer);
+
+        if (score >= 0) {
+            return score;
         }
 
         float maxEval;
@@ -93,7 +97,7 @@ class CPUPlayer
             maxEval = Float.NEGATIVE_INFINITY;
 
             for (Move childMove: board.listMoves(maxPlayer)) {
-                float eval = alphaBeta(board.clone(), childMove, depth - 1, alpha, beta, opPlayer);
+                float eval = alphaBeta(board.clone(), childMove, alpha, beta, opPlayer);
                 maxEval = Float.max(maxEval, eval);
                 alpha = Float.max(alpha, eval);
                 if (beta <= alpha) {
@@ -106,7 +110,7 @@ class CPUPlayer
             minEval = Float.POSITIVE_INFINITY;
 
             for (Move childMove: board.listMoves(maxPlayer)) {
-                float eval = alphaBeta(board.clone(), childMove, depth - 1, alpha, beta, opPlayer);
+                float eval = alphaBeta(board.clone(), childMove, alpha, beta, opPlayer);
                 minEval = Float.min(minEval, eval);
                 beta = Float.min(beta, eval);
                 if (beta <= alpha) {
@@ -118,11 +122,15 @@ class CPUPlayer
         }
     }
 
-    public float minMax(Board board, Move move, int depth, Mark maxPlayer) {
+    public float minMax(Board board, Move move, Mark maxPlayer) {
+        numExploredNodes += 1;
+
         board.play(move, maxPlayer);
 
-        if (depth == 0) {
-            return board.evaluate(maxPlayer);
+        float score = board.evaluate(maxPlayer);
+
+        if (score >= 0) {
+            return score;
         }
 
         float maxEval;
@@ -146,7 +154,7 @@ class CPUPlayer
             maxEval = Float.NEGATIVE_INFINITY;
 
             for (Move childMove: board.listMoves(maxPlayer)) {
-                float eval = minMax(board.clone(), childMove, depth - 1, opPlayer);
+                float eval = minMax(board.clone(), childMove, opPlayer);
                 maxEval = Float.max(maxEval, eval);
             }
 
@@ -155,7 +163,7 @@ class CPUPlayer
             minEval = Float.POSITIVE_INFINITY;
 
             for (Move childMove: board.listMoves(maxPlayer)) {
-                float eval = minMax(board.clone(), childMove, depth - 1, opPlayer);
+                float eval = minMax(board.clone(), childMove, opPlayer);
                 minEval = Float.min(minEval, eval);
             }
 
