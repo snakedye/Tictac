@@ -13,10 +13,12 @@ class CPUPlayer
     // au début de votre MinMax ou Alpha Beta.
     private int numExploredNodes;
 
+    private Mark player;
+
     // Le constructeur reçoit en paramètre le
     // joueur MAX (X ou O)
     public CPUPlayer(Mark cpu){
-
+        this.player = cpu;
     }
 
     // Ne pas changer cette méthode
@@ -31,6 +33,7 @@ class CPUPlayer
     {
         numExploredNodes = 0;
 
+
     }
 
     // Retourne la liste des coups possibles.  Cette liste contient
@@ -38,6 +41,7 @@ class CPUPlayer
     // ont le même score.
     public ArrayList<Move> getNextMoveAB(Board board){
         numExploredNodes = 0;
+
 
     }
 

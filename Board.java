@@ -10,7 +10,7 @@ class Board
 
     // Ne pas changer la signature de cette méthode
     public Board() {
-
+        board = new Mark[3][3];
     }
 
     public Board(Mark[][] board) {
@@ -31,30 +31,81 @@ class Board
     //           0   pour un match nul
     // Ne pas changer la signature de cette méthode
     public int evaluate(Mark mark){
-        int result = 0;
-        Mark minMark = Mark.EMPTY;
-
-        if(mark == Mark.X){
-            minMark = Mark.O;
-        }else if (mark == Mark.O){
-            minMark = Mark.X;
+        Mark opPlayer;
+        switch (mark) {
+            case X:
+                opPlayer = Mark.O;
+                break;
+            case O:
+                opPlayer = Mark.X;
+                break;
+            default:
+                opPlayer = Mark.EMPTY;
+                break;
         }
 
-        for(int i=0; i<3; i++){
-            if(board[i][0] == mark && board[i][1]  == mark && board[i][2]  == mark){
-                result = 100;
+        int playerScore = simpleEval(mark);
+
+        if (playerScore == 0) {
+            return -simpleEval(opPlayer);
+        } else {
+            return playerScore;
+        }
+    }
+
+    public int simpleEval(Mark mark){
+        for (int i = 0; i < this.board.length; i++) {
+            Mark ca = get(i, 0);
+            Mark cb = get(i, 1);
+            Mark cc = get(i, 2);
+
+            if (ca.equals(mark) && cb.equals(mark) && cc.equals(mark)) {
+                return 100;
             }
-            if(board[0][i] == mark && board[1][i]  == mark && board[2][i]  == mark){
-                result = 100;
-            }
-            if(board[i][0] == minMark && board[i][1]  == minMark && board[i][2]  == minMark){
-                result = -100;
-            }
-            if(board[0][i] == minMark && board[1][i]  == minMark && board[2][i]  == minMark){
-                result = -100;
+
+            Mark ra = get(i, 0);
+            Mark rb = get(i, 1);
+            Mark rc = get(i, 2);
+
+
+            if (ra.equals(mark) && rb.equals(mark) && rc.equals(mark)) {
+                return 100;
             }
         }
 
-        return result;
+        Mark la = get(0, 0);
+        Mark ce = get(1, 1);
+        Mark lc = get(2, 2);
+
+        Mark ra = get(0, 2);
+        Mark rc = get(2, 0);
+
+        if (la.equals(mark) && ce.equals(mark) && lc.equals(mark)) {
+            return 100;
+        }
+
+        if (ra.equals(mark) && ce.equals(mark) && rc.equals(mark)) {
+            return 100;
+        }
+
+        return 0;
+    }
+
+    public ArrayList<Move> listMoves(Mark mark) {
+        ArrayList<Move> listMoves = new ArrayList<>();
+
+        for (int row = 0; row < this.board.length; row ++) {
+            for (int col = 0; col < this.board[row].length; col ++) {
+                if (!get(row, col).equals(mark)) {
+                    listMoves.add(new Move(row, col));
+                }
+            }
+        }
+
+        return listMoves;
+    }
+
+    public Mark get(int col, int row) {
+        return this.board[col][row];
     }
 }
