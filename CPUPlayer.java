@@ -6,7 +6,6 @@ import java.util.ArrayList;
 // être le cas)
 class CPUPlayer
 {
-
     private Mark player;
 
     // Contient le nombre de noeuds visités (le nombre
@@ -72,7 +71,7 @@ class CPUPlayer
 
         float score = board.evaluate(maxPlayer);
 
-        if (score >= 0) {
+        if (score == 100) {
             return score;
         }
 
@@ -129,7 +128,7 @@ class CPUPlayer
 
         float score = board.evaluate(maxPlayer);
 
-        if (score >= 0) {
+        if (score == 100) {
             return score;
         }
 

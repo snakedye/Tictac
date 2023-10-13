@@ -36,6 +36,8 @@ public class TictacTest {
             currentBoard.play(move, Mark.X);
             float score = currentBoard.evaluate(Mark.X);
 
+            System.out.println("Score: "+score);
+
             assertNotEquals(-100, score);
         }
     }
