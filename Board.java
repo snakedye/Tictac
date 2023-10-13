@@ -6,11 +6,14 @@ import java.util.ArrayList;
 // être le cas)
 class Board
 {
-    private Mark[][] board;
+    private Mark[][] board = {
+        {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY},
+        {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY},
+        {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY},
+    };
 
     // Ne pas changer la signature de cette méthode
     public Board() {
-        board = new Mark[3][3];
     }
 
     public Board(Mark[][] board) {
@@ -59,9 +62,9 @@ class Board
 
     public int simpleEval(Mark mark){
         for (int i = 0; i < this.board.length; i++) {
-            Mark ca = get(i, 0);
-            Mark cb = get(i, 1);
-            Mark cc = get(i, 2);
+            Mark ca = get(0, i);
+            Mark cb = get(1, i);
+            Mark cc = get(2, i);
 
             if (ca.equals(mark) && cb.equals(mark) && cc.equals(mark)) {
                 return 100;
@@ -96,7 +99,7 @@ class Board
     }
 
     public Mark get(int row, int col) {
-        return this.board[col][row];
+        return this.board[row][col];
     }
 
     public ArrayList<Move> listMoves(Mark mark) {
@@ -104,7 +107,7 @@ class Board
 
         for (int row = 0; row < this.board.length; row ++) {
             for (int col = 0; col < this.board[row].length; col ++) {
-                if (!get(row, col).equals(mark)) {
+                if (get(row, col).equals(Mark.EMPTY)) {
                     listMoves.add(new Move(row, col));
                 }
             }
