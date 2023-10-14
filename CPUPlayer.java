@@ -31,7 +31,7 @@ class CPUPlayer
     public ArrayList<Move> getNextMoveMinMax(Board board)
     {
         numExploredNodes = 0;
-
+        
         float maxScore = Float.NEGATIVE_INFINITY;
 
         ArrayList<Move> bestMoves = new ArrayList<>();
@@ -79,9 +79,9 @@ class CPUPlayer
 
         board.play(move, maxPlayer);
 
-        float score = board.evaluate(maxPlayer);
+        float score = board.evaluate(player);
 
-        if (score == 100) {
+        if (score != 0) {
             return score;
         }
 
@@ -136,9 +136,9 @@ class CPUPlayer
 
         board.play(move, maxPlayer);
 
-        float score = board.evaluate(maxPlayer);
+        float score = board.evaluate(player);
 
-        if (score == 100) {
+        if (score != 0) {
             return score;
         }
 

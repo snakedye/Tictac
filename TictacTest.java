@@ -28,15 +28,14 @@ public class TictacTest {
 
         int round = 0;
 
-        while (true) {
+        while (board.evaluate(mainPlayer) != 100) {
             Mark player;
             if (round % 2 == 0) {
                 player = mainPlayer;
             } else {
                 player = opPlayer;
             }
-            // System.out.println("Possible moves: "+board.listMoves(player).size());
-            // System.out.println(board);
+            System.out.println(board);
             CPUPlayer cpu = new CPUPlayer(player);
             ArrayList<Move> movesAB = cpu.getNextMoveAB(board.clone());
             if (movesAB.size() > 0) {
@@ -63,7 +62,7 @@ public class TictacTest {
 
         int round = 0;
 
-        while (true) {
+        while (board.evaluate(mainPlayer) != 100) {
             Mark player;
             if (round % 2 == 0) {
                 player = mainPlayer;
@@ -86,6 +85,24 @@ public class TictacTest {
         System.out.println(board);
 
         assertNotEquals(-100, board.evaluate(mainPlayer));
+    }
+
+    @Test
+    public void testGetNextMoveMinMaxAiman() {
+        Mark player = Mark.O;
+        CPUPlayer cpuPlayer = new CPUPlayer(player);
+        Mark[][] marks = {
+            {Mark.X, Mark.X, Mark.O},
+            {Mark.X, Mark.X, Mark.EMPTY},
+            {Mark.O, Mark.O, Mark.EMPTY},
+        };
+        Board board = new Board(marks);
+        ArrayList<Move> moves = cpuPlayer.getNextMoveMinMax(board);
+        // System.out.println(moves.size());
+        for(int i=0;i<moves.size();i++){
+            // System.out.println(moves.get(i).getRow()+ " " +moves.get(i).getCol());
+        }
+
     }
 
     @Test
@@ -137,5 +154,9 @@ public class TictacTest {
         int scoreDiagonal = new Board(diagonal).evaluate(Mark.X);
 
         assertEquals(100, scoreDiagonal);
+
+        int scoreNul = new Board().evaluate(Mark.X);
+        
+        assertEquals(0, scoreNul);
     }
 }
