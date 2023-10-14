@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // IMPORTANT: Il ne faut pas changer la signature des méthodes
 // de cette classe, ni le nom de la classe.
@@ -31,7 +32,6 @@ class Board
         this.board[row][col] = mark;
 
     }
-
 
     // retourne  100 pour une victoire
     //          -100 pour une défaite
@@ -117,9 +117,22 @@ class Board
     }
 
     public Board clone() {
-        Board board = new Board();
-        board.board = this.board.clone();
+        Mark[][] board = {
+            Arrays.copyOf(this.board[0], 3),
+            Arrays.copyOf(this.board[1], 3),
+            Arrays.copyOf(this.board[2], 3)
+        };
+        return new Board(board);
+    }
 
-        return board;
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (Mark[] marks : board) {
+            for (Mark mark : marks) {
+                s.append(mark.toString());
+            }
+            s.append('\n');
+        }
+        return s.toString();
     }
 }

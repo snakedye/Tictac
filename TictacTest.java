@@ -7,39 +7,85 @@ import org.junit.Test;
 
 public class TictacTest {
     @Test
-    public void testGetNextMoveMinMax() {
+    public void testBoardClone() {
         Board board = new Board();
+        Board copyBoard = board.clone();
 
-        CPUPlayer cpu = new CPUPlayer(Mark.X);
+        board.play(new Move(1, 1), Mark.X);
 
-        ArrayList<Move> moves = cpu.getNextMoveMinMax(board);
+        System.out.println(board.toString());
 
-        for (Move move: moves) {
-            Board currentBoard = new Board();
-            currentBoard.play(move, Mark.X);
-            float score = currentBoard.evaluate(Mark.X);
+        System.out.println(copyBoard.toString());
 
-            assertNotEquals(-100, score);
-        }
+        assertNotEquals(board.get(1, 1), copyBoard.get(1, 1));
     }
-
     @Test
     public void testGetNextMoveAB() {
         Board board = new Board();
 
-        CPUPlayer cpu = new CPUPlayer(Mark.X);
+        Mark mainPlayer = Mark.X;
+        Mark opPlayer = Mark.O;
 
-        ArrayList<Move> moves = cpu.getNextMoveAB(board);
+        int round = 0;
 
-        for (Move move: moves) {
-            Board currentBoard = new Board();
-            currentBoard.play(move, Mark.X);
-            float score = currentBoard.evaluate(Mark.X);
-
-            System.out.println("Score: "+score);
-
-            assertNotEquals(-100, score);
+        while (true) {
+            Mark player;
+            if (round % 2 == 0) {
+                player = mainPlayer;
+            } else {
+                player = opPlayer;
+            }
+            // System.out.println("Possible moves: "+board.listMoves(player).size());
+            // System.out.println(board);
+            CPUPlayer cpu = new CPUPlayer(player);
+            ArrayList<Move> movesAB = cpu.getNextMoveAB(board.clone());
+            if (movesAB.size() > 0) {
+                Move move = movesAB.get(0);
+                board.play(move, player);
+            } else {
+                break;
+            }
+            round += 1;
         }
+
+
+        System.out.println(board);
+
+        assertNotEquals(-100, board.evaluate(mainPlayer));
+    }
+
+    @Test
+    public void testGetNextMoveMinMax() {
+        Board board = new Board();
+
+        Mark mainPlayer = Mark.X;
+        Mark opPlayer = Mark.O;
+
+        int round = 0;
+
+        while (true) {
+            Mark player;
+            if (round % 2 == 0) {
+                player = mainPlayer;
+            } else {
+                player = opPlayer;
+            }
+            CPUPlayer cpu = new CPUPlayer(player);
+            ArrayList<Move> movesMinMax = cpu.getNextMoveMinMax(board.clone());
+            System.out.println(movesMinMax.size());
+            if (movesMinMax.size() > 0) {
+                Move move = movesMinMax.get(0);
+                board.play(move, player);
+            } else {
+                break;
+            }
+            round += 1;
+        }
+
+
+        System.out.println(board);
+
+        assertNotEquals(-100, board.evaluate(mainPlayer));
     }
 
     @Test

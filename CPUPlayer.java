@@ -32,17 +32,22 @@ class CPUPlayer
     {
         numExploredNodes = 0;
 
-        ArrayList<Move> moves = board.listMoves(player);
+        float maxScore = Float.NEGATIVE_INFINITY;
 
-        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> minMax(board.clone(), move, player)).toList());
+        ArrayList<Move> bestMoves = new ArrayList<>();
 
-        for (Float score : scoreList) {
-            if (scoreList.indexOf(score) != scoreList.lastIndexOf(score)) {
-                return moves;
-            } 
+        for (Move move : board.listMoves(player)) {
+            float score = minMax(board.clone(), move, player);
+            if (score > maxScore) {
+                bestMoves.clear();  // Si le score de ce move est meilleur que les precendents alors ils sont tous pires donc on les retire
+                maxScore = score; // Le score de ce move devient le nouveau max.
+                bestMoves.add(move);
+            } else if (score == maxScore) {
+                bestMoves.add(move);
+            }
         }
 
-        return new ArrayList<>();
+        return bestMoves;
     }
 
     // Retourne la liste des coups possibles.  Cette liste contient
@@ -51,17 +56,22 @@ class CPUPlayer
     public ArrayList<Move> getNextMoveAB(Board board){
         numExploredNodes = 0;
 
-        ArrayList<Move> moves = board.listMoves(player);
+        float maxScore = Float.NEGATIVE_INFINITY;
 
-        ArrayList<Float> scoreList = new ArrayList<>(moves.stream().map((move) -> alphaBeta(board.clone(), move, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, player)).toList());
+        ArrayList<Move> bestMoves = new ArrayList<>(); // Tous les moves devrait avoir le meme score.
 
-        for (Float score : scoreList) {
-            if (scoreList.indexOf(score) != scoreList.lastIndexOf(score)) {
-                return moves;
-            } 
+        for (Move move : board.listMoves(player)) {
+            float score = alphaBeta(board.clone(), move, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, player);
+            if (score > maxScore) {
+                bestMoves.clear();  // Si le score de ce move est meilleur que les precendents alors ils sont tous pires donc on les retire
+                maxScore = score; // Le score de ce move devient le nouveau max.
+                bestMoves.add(move);
+            } else if (score == maxScore) {
+                bestMoves.add(move);
+            }
         }
 
-        return new ArrayList<>();
+        return bestMoves;
     }
 
     public float alphaBeta(Board board, Move move, float alpha, float beta, Mark maxPlayer) {
