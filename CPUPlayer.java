@@ -12,7 +12,7 @@ class CPUPlayer
     // d'appel à la fonction MinMax ou Alpha Beta)
     // Normalement, la variable devrait être incrémentée
     // au début de votre MinMax ou Alpha Beta.
-    private int numExploredNodes;
+    private int numExploredNodes = 0;
 
     // Le constructeur reçoit en paramètre le
     // joueur MAX (X ou O)
@@ -29,14 +29,13 @@ class CPUPlayer
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
     public ArrayList<Move> getNextMoveMinMax(Board board)
-    {
-        numExploredNodes = 0;
-        
+    {        
         float maxScore = Float.NEGATIVE_INFINITY;
 
         ArrayList<Move> bestMoves = new ArrayList<>();
 
         for (Move move : board.listMoves(player)) {
+            numExploredNodes = 0;
             float score = minMax(board.clone(), move, player);
             if (score > maxScore) {
                 bestMoves.clear();  // Si le score de ce move est meilleur que les precendents alors ils sont tous pires donc on les retire
@@ -54,13 +53,12 @@ class CPUPlayer
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
     public ArrayList<Move> getNextMoveAB(Board board){
-        numExploredNodes = 0;
-
         float maxScore = Float.NEGATIVE_INFINITY;
 
         ArrayList<Move> bestMoves = new ArrayList<>(); // Tous les moves devrait avoir le meme score.
 
         for (Move move : board.listMoves(player)) {
+            numExploredNodes = 0;
             float score = alphaBeta(board.clone(), move, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, player);
             if (score > maxScore) {
                 bestMoves.clear();  // Si le score de ce move est meilleur que les precendents alors ils sont tous pires donc on les retire

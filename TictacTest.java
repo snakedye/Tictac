@@ -98,11 +98,27 @@ public class TictacTest {
         };
         Board board = new Board(marks);
         ArrayList<Move> moves = cpuPlayer.getNextMoveMinMax(board);
-        // System.out.println(moves.size());
+        System.out.println(moves.size());
         for(int i=0;i<moves.size();i++){
-            // System.out.println(moves.get(i).getRow()+ " " +moves.get(i).getCol());
+            System.out.println(moves.get(i).getRow()+ " " +moves.get(i).getCol());
         }
+    }
 
+    @Test
+    public void testGetNextMoveABAiman() {
+        Mark player = Mark.O;
+        CPUPlayer cpuPlayer = new CPUPlayer(player);
+        Mark[][] marks = {
+            {Mark.X, Mark.O, Mark.EMPTY},
+            {Mark.X, Mark.O, Mark.EMPTY},
+            {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY},
+        };
+        Board board = new Board(marks);
+        ArrayList<Move> moves = cpuPlayer.getNextMoveAB(board);
+        System.out.println(moves.size());
+        for(int i=0;i<moves.size();i++){
+            System.out.println(moves.get(i).getRow()+ " " +moves.get(i).getCol());
+        }
     }
 
     @Test
